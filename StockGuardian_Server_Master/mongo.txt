@@ -1,0 +1,3 @@
+db username: naaneashwin
+db password: 9xfvu4SN3RD0KbEu
+db urI  : mongodb+srv://naaneashwin:<password>@stockguardian.4bwr6ir.mongodb.net/?retryWrites=true&w=majority
