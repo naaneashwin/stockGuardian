@@ -1,0 +1,30 @@
+{
+    "name": "Tata Motors",
+    "exchange": "Bombay Stock Exchnage",
+    "purchase": [
+        {
+            "units": 12,
+            "on": "10/06/2023",
+            "at": 456
+        },
+        {
+            "units": 11,
+            "on": "11/06/2023",
+            "at": 454
+        }
+    ],
+    "sell": [
+        {
+            "units": 8,
+            "on": "11/06/2023",
+            "at": 457
+        }
+    ],
+    "average": {
+        "purchase": 455,
+        "sell": 457
+    },
+    "profit": 299,
+    "profitPercentage": 0.22,
+    "userId": "648a034b26c043970e7750d0"
+}

@@ -1,58 +1,36 @@
-// const http = require('node:http');
-const fs = require('node:fs');
+const dotenv = require('dotenv').config();
 const express = require('express');
-
+const  mongoose = require('mongoose');
 const app = express();
+const db = require('./src/Utilities/db');
+const stocksRoutes = require('./src/Routers/stocksRoutes');
+const userRoutes = require('./src/Routers/usersRoutes');
+const { errorHandler } = require('./src/errorHandler');
+const cookieParser = require('cookie-parser');
 
-// const server = http.createServer((req, res) => {
-//     // res.writeHead(200,'Hello' ,{ 'Content-Type': 'text/plain'});
-//     // res.setHeader('Content-Type', 'text/plain');
-//     fs.readFile('./mongo.txt', {encoding: 'utf-8'}, (err, data) => {
-//         if (err) {
-//             res.statusMessage = 'There is an error' + err;
-//             res.statusCode = 404;
-//             res.end();
-//         } else {
-//             res.write(data);
-//             res.end();
-//         }
-//     });
-// });
+mongoose.connection.on('connected', listen);
 
-// server.listen(3000);
+const port = process.env.PORT || 3000;
 
-app.listen(3000, () => {
-    console.log('App is listening @ Port 3000');
-});
+function listen() {
+    app.listen(port, () => {
+        console.log(`Server listening @ Port ${port}`);
+    })
+}
 
-// app.use((req, res, next) => {
-//     console.log(req.url);
-//     console.log(req.path);
-//     console.log(req.params);
-//     console.log(req.body);
-//     next();
-// })
-
-// app.use('/:id', (req, res) => {
-//     res.send(`In path /${req.params.id}`)
-// })
-
-// app.get('/', (req, res) => {
-//     res.status(200).send('In path /');
-// });
-
-app.get('/stocks', (req, res, next) => {
-    res.send('In path ' + req.path)
-});
-
-app.use((req, res) => {
-    res.status(404).send('Page not found Ashiwn')
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use(cookieParser());
+app.use((req, res, next) => {
+    console.log('Befoe Call');
+    next();
 })
-
-app.use(function (err, req, res, next) {
-    console.log('Hello' + err);
-    if (err) {
-        res.status(err.response?.status).send(err.response?.message);
-    }
-    res.status(500).send('Internal Server Error Ashwin');
-});
+// add routes here
+app.use('/stocks', stocksRoutes);
+app.use('/users', userRoutes);
+app.use((err,req, res, next) => {
+    // console.log('Befoe error', err, res);
+    next(err)
+})
+app.use(errorHandler);
+app.use(() => console.log('Afte error'))
